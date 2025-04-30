@@ -18,10 +18,22 @@ const Home = () => {
 
 	function inputEnter(e){
 		if (e.key === "Enter" && nuevaTarea.trim() !== "") {
-			setTareas([...tareas, nuevaTarea]);
-			setNuevaTarea("");
+
+			fetch("https://playground.4geeks.com/todo/users/DannyMtz ,{
+				method:"POST",
+				headers: {
+					"Content-Type": "application/json"},
+				}),
+				.then((response)=>response.json())
+				.then((data)=>{
+					if (data && data.id) {
+						setTareas([...tareas, nuevaTarea]);}
+						setNuevaTarea("");
+		})
+				.catch((error)=>console.log(error))
+
+			}
 		}
-	}
 
 	function borrarTarea(index){
 		const nuevasTareas = tareas.filter((_, i)=> i !== index);
