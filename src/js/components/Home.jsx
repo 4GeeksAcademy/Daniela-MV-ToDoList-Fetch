@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect, useInsertionEffect} from "react";
 
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
@@ -19,12 +19,12 @@ const Home = () => {
 	function inputEnter(e){
 		if (e.key === "Enter" && nuevaTarea.trim() !== "") {
 
-			fetch("https://playground.4geeks.com/todo/users/DannyMtz ,{
+			fetch("https://playground.4geeks.com/todo/users/DannyMtz",{
 				method:"POST",
 				headers: {
 					"Content-Type": "application/json"},
-				}),
-				.then((response)=>response.json())
+				})
+			    .then((response)=>response.json())
 				.then((data)=>{
 					if (data && data.id) {
 						setTareas([...tareas, nuevaTarea]);}
@@ -40,9 +40,33 @@ const Home = () => {
 		setTareas(nuevasTareas);
 	}
 
+	// function borrarTodasTareas(actividades){
+	// 	const actividades=nuevasTareas;
+
+	// 	fetch("https://playground.4geeks.com/todo/users/DannyMtz",{
+	// 		method:"DELETE",
+	// 		headers: {
+	// 			"Content-Type": "application/json"},
+	// 		})
+	// 		.then((response)=>response.json())
+	// 		.then((data)=>{
+	// 			if (data.id===actividades) {
+	// 				setNuevaTarea("");}
+	// })
+	// 		.catch((error)=>console.log(error))
+
+	// 	}
+	
+
 	function tareasActivas (){
 		return tareas.length;
 	}
+
+	// useEffect(()=>{
+    //    borrarTodasTareas(),
+	//    inputEnter()
+	// }, [])
+
 
 	return (
 	 <div className="fondo d-flex justify-content-center">
