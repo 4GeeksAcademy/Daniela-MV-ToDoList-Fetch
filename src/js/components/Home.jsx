@@ -23,11 +23,14 @@ const Home = () => {
 				method:"POST",
 				headers: {
 					"Content-Type": "application/json"},
+				body: JSON.stringify({
+					label: nuevaTarea,
+					done: false
 				})
+			})
 			    .then((response)=>response.json())
 				.then((data)=>{
-					if (data && data.id) {
-						setTareas([...tareas, nuevaTarea]);}
+						setTareas([...tareas, { label: nuevaTarea, done:false}]);
 						setNuevaTarea("");
 		})
 				.catch((error)=>console.log(error))
@@ -39,33 +42,15 @@ const Home = () => {
 		const nuevasTareas = tareas.filter((_, i)=> i !== index);
 		setTareas(nuevasTareas);
 	}
-
-	// function borrarTodasTareas(actividades){
-	// 	const actividades=nuevasTareas;
-
-	// 	fetch("https://playground.4geeks.com/todo/users/DannyMtz",{
-	// 		method:"DELETE",
-	// 		headers: {
-	// 			"Content-Type": "application/json"},
-	// 		})
-	// 		.then((response)=>response.json())
-	// 		.then((data)=>{
-	// 			if (data.id===actividades) {
-	// 				setNuevaTarea("");}
-	// })
-	// 		.catch((error)=>console.log(error))
-
-	// 	}
 	
 
 	function tareasActivas (){
 		return tareas.length;
 	}
 
-	// useEffect(()=>{
-    //    borrarTodasTareas(),
-	//    inputEnter()
-	// }, [])
+	 useEffect(() => {
+	     inputEnter()
+	  }, [])
 
 
 	return (
