@@ -14,12 +14,14 @@ const Home = () => {
 	
 	function entrada(evento){
        setNuevaTarea(evento.target.value);
-		fetch("https://playground.4geeks.com/todo/users/DannyMtz",{
+		fetch("https://playground.4geeks.com/todo/todos/DannyMtz",{
 			method:"GET",
 			})
 			.then((response)=>response.json())
-			.then((data)=>data.label)
+			.then((data)=>data.todos)
 			.catch((error)=>console.log(error))
+
+			
 	   
 	}
 
@@ -40,9 +42,9 @@ const Home = () => {
 		return tareas.length;
 	}
 
-	//  useEffect(() => {
-	//      entrada()
-	//   }, [])
+	useEffect(() => {
+	    entrada()
+	 }, [])
 
 
 	return (
