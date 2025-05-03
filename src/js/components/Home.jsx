@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useInsertionEffect} from "react";
+import React, { useState, useEffect} from "react";
 
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
@@ -14,29 +14,21 @@ const Home = () => {
 	
 	function entrada(evento){
        setNuevaTarea(evento.target.value);
+		fetch("https://playground.4geeks.com/todo/users/DannyMtz",{
+			method:"GET",
+			})
+			.then((response)=>response.json())
+			.then((data)=>data.label)
+			.catch((error)=>console.log(error))
+	   
 	}
 
 	function inputEnter(e){
 		if (e.key === "Enter" && nuevaTarea.trim() !== "") {
-
-			fetch("https://playground.4geeks.com/todo/users/DannyMtz",{
-				method:"POST",
-				headers: {
-					"Content-Type": "application/json"},
-				body: JSON.stringify({
-					label: nuevaTarea,
-					done: false
-				})
-			})
-			    .then((response)=>response.json())
-				.then((data)=>{
-						setTareas([...tareas, { label: nuevaTarea, done:false}]);
-						setNuevaTarea("");
-		})
-				.catch((error)=>console.log(error))
-
-			}
+			setTareas([...tareas, nuevaTarea]);
+			setNuevaTarea("");
 		}
+	}
 
 	function borrarTarea(index){
 		const nuevasTareas = tareas.filter((_, i)=> i !== index);
@@ -48,9 +40,9 @@ const Home = () => {
 		return tareas.length;
 	}
 
-	 useEffect(() => {
-	     inputEnter()
-	  }, [])
+	//  useEffect(() => {
+	//      entrada()
+	//   }, [])
 
 
 	return (
