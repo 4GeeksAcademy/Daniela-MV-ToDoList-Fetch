@@ -53,11 +53,28 @@ const Home = () => {
 		};
 		}
 	
-
-	function borrarTarea(index){
-		const nuevasTareas = tareas.filter((_, i)=> i !== index);
-		setTareas(nuevasTareas);
-	}
+		function borrarTarea(id) {
+			fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
+				method: "DELETE",
+			})
+				.then((response) => {
+					if (response.ok) {
+						setTareas(tareas.filter(tarea => tarea.id !== id));
+					} else {
+						console.error("Error al borrar tarea");
+					}
+				})
+				.catch((error) => console.error(error));
+		}
+		
+		
+		// fetch("https://playground.4geeks.com/todo/todos/{todo.id}",{
+		// 	method:"DELETE",
+		// 	})
+		// 	.then((response)=>response.json())
+		// 	.then(()=> setTareas([]))
+		// 	.catch((error)=>console.error(error))
+	
 	
 
 	function tareasActivas (){
@@ -67,7 +84,6 @@ const Home = () => {
 	useEffect(() => {
 	    usuario()
 		traerTareas()
-
 	 }, [])
 
 
@@ -85,7 +101,7 @@ const Home = () => {
 
                 <ul className="bg-light-subtle" style={{width: "700px"}}>
 				{tareas.map((tarea)=> 
-				<li className="d-flex justify-content-between align-items-center px-3 py-2 border-bottom rounded-3" id="homework" key={tarea.id} onMouseEnter={()=>setBorrarBoton(index)} onMouseLeave={() =>setBorrarBoton(null)}> 
+				<li className="d-flex justify-content-between align-items-center px-3 py-2 border-bottom rounded-3" id="homework" key={tarea.id} onMouseEnter={()=>setBorrarBoton(tarea.id)} onMouseLeave={() =>setBorrarBoton(null)}> 
 				<span className="text">
 				<i className="bi bi-check-circle me-2 fs-4 text-success"></i>{tarea.label}</span>
 				{borrarBoton === tarea.id && (
