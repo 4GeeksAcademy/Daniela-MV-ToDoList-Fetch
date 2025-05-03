@@ -66,14 +66,7 @@ const Home = () => {
 				})
 				.catch((error) => console.error(error));
 		}
-		
-		
-		// fetch("https://playground.4geeks.com/todo/todos/{todo.id}",{
-		// 	method:"DELETE",
-		// 	})
-		// 	.then((response)=>response.json())
-		// 	.then(()=> setTareas([]))
-		// 	.catch((error)=>console.error(error))
+
 	
 	
 
