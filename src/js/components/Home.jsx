@@ -4,6 +4,7 @@ import React, { useState, useEffect} from "react";
 import rigoImage from "../../img/rigo-baby.jpg";
 
 
+
 //create your first component
 const Home = () => {
 
@@ -14,23 +15,44 @@ const Home = () => {
 	
 	function entrada(evento){
        setNuevaTarea(evento.target.value);
-		fetch("https://playground.4geeks.com/todo/todos/DannyMtz",{
-			method:"GET",
+	}
+
+	function usuario(){
+		fetch("https://playground.4geeks.com/todo/users/DannyMtz",{
+			method:"POST"
 			})
 			.then((response)=>response.json())
-			.then((data)=>data.todos)
+			.then((data)=>console.log(data))
 			.catch((error)=>console.log(error))
+	}
 
-			
-	   
+	function traerTareas(){
+		fetch("https://playground.4geeks.com/todo/users/DannyMtz",{
+			method:"GET"
+			})
+			.then((response)=>response.json())
+			.then((data)=>setTareas(data.todos))
+			.catch((error)=>console.log(error))
 	}
 
 	function inputEnter(e){
 		if (e.key === "Enter" && nuevaTarea.trim() !== "") {
-			setTareas([...tareas, nuevaTarea]);
-			setNuevaTarea("");
+			const newTask={label: nuevaTarea, done: false};
+			fetch("https://playground.4geeks.com/todo/todos/DannyMtz",{
+				method:"POST",
+                body: JSON.stringify(newTask),
+                headers: {"Content-Type": "application/json" }
+				})
+				.then((response)=>response.json())
+				.then((data)=> {
+					if (data && data.id){
+						setTareas([...tareas, data]);
+					} setNuevaTarea("");
+				})
+				.catch((error)=>console.log(error))
+		};
 		}
-	}
+	
 
 	function borrarTarea(index){
 		const nuevasTareas = tareas.filter((_, i)=> i !== index);
@@ -43,7 +65,9 @@ const Home = () => {
 	}
 
 	useEffect(() => {
-	    entrada()
+	    usuario()
+		traerTareas()
+
 	 }, [])
 
 
@@ -60,12 +84,12 @@ const Home = () => {
 	 		onKeyDown={inputEnter}/>	
 
                 <ul className="bg-light-subtle" style={{width: "700px"}}>
-				{tareas.map((tarea, index)=> 
-				<li className="d-flex justify-content-between align-items-center px-3 py-2 border-bottom rounded-3" id="homework" key={index} onMouseEnter={()=>setBorrarBoton(index)} onMouseLeave={() =>setBorrarBoton(null)}> 
+				{tareas.map((tarea)=> 
+				<li className="d-flex justify-content-between align-items-center px-3 py-2 border-bottom rounded-3" id="homework" key={tarea.id} onMouseEnter={()=>setBorrarBoton(index)} onMouseLeave={() =>setBorrarBoton(null)}> 
 				<span className="text">
-				<i className="bi bi-check-circle me-2 fs-4 text-success"></i>{tarea}</span>
-				{borrarBoton === index && (
-				<button type="button" class="btn btn-light" onClick={()=>borrarTarea(index)}>
+				<i className="bi bi-check-circle me-2 fs-4 text-success"></i>{tarea.label}</span>
+				{borrarBoton === tarea.id && (
+				<button type="button" class="btn btn-light" onClick={()=>borrarTarea(tarea.id)}>
 				<i className="bi bi-clipboard-x"></i> 
 				</button> )}
 				</li>)}
