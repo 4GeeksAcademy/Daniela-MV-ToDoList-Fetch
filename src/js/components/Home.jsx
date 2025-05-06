@@ -18,13 +18,28 @@ const Home = () => {
 	}
 
 	function usuario(){
-		fetch("https://playground.4geeks.com/todo/users/DannyMtz",{
-			method:"POST"
+			fetch("https://playground.4geeks.com/todo/users/DannyMtz", {
+				method: "GET"
 			})
-			.then((response)=>response.json())
-			.then((data)=>console.log(data))
-			.catch((error)=>console.log(error))
-	}
+			.then((response) => {
+				if (response.status === 404) {
+					return fetch("https://playground.4geeks.com/todo/users/DannyMtz", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify([])
+					});
+				} else {
+					return Promise.resolve();
+				}
+			})
+			.then(() => {
+				console.log("Usuario creado");
+			})
+			.catch((error) => console.error("Error al crear usuario:", error));
+		}
+	
 
 	function traerTareas(){
 		fetch("https://playground.4geeks.com/todo/users/DannyMtz",{
